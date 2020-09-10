@@ -178,7 +178,6 @@ public class DynamicScriptController : MonoBehaviour
         // Define script in a string for now
         // TODO: Load from a file later
 
-        /*
         // This version uses the "Pure" methods defined above
         string updateCode = @"
         function updateFunction (delta)
@@ -196,8 +195,8 @@ public class DynamicScriptController : MonoBehaviour
             -- Set rotation back
             SetRotation(0, y, 0);
         end";
-        */
 
+        /*
         // This version uses the "Unity" methods defined above
         string updateCode = @"
         function updateFunction (delta)
@@ -219,6 +218,7 @@ public class DynamicScriptController : MonoBehaviour
             -- Set rotation back
             SetRotationUnity(rot);
         end";
+        */
 
         // Load script string into script
         script.DoString(updateCode);
