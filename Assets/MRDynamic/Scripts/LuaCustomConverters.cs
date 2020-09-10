@@ -1,5 +1,5 @@
 ﻿/// Special thanks to <see href="https://gist.github.com/marcinjackowiak">marcinjackowiak</see>
-/// for his sample file, which was originally found <see href="https://gist.github.com/marcinjackowiak/24e01314ce9956487515dcb328fa0877">here</see>.
+/// for his sample file which this one was based on. His version can be found <see href="https://gist.github.com/marcinjackowiak/24e01314ce9956487515dcb328fa0877">here</see>.
 using UnityEngine;
 using MoonSharp.Interpreter;
 using System;
@@ -22,51 +22,47 @@ public static class LuaCustomConverters
 
     public static void RegisterAll()
     {
-
         // Vector 2
 
-        Script.GlobalOptions.CustomConverters.SetScriptToClrCustomConversion(DataType.Table, typeof(Vector2),
-                dynVal =>
+        Script.GlobalOptions.CustomConverters.SetScriptToClrCustomConversion(DataType.Table, typeof(Vector2), dynVal =>
         {
             Table table = dynVal.Table;
-            float x = (float)((Double)table[1]);
-            float y = (float)((Double)table[2]);
+            float x = (float)((Double)table["x"]);
+            float y = (float)((Double)table["y"]);
             return new Vector2(x, y);
-        }
-                                                                            );
-        Script.GlobalOptions.CustomConverters.SetClrToScriptCustomConversion<Vector2>(
-            (script, vector) =>
+        });
+
+        Script.GlobalOptions.CustomConverters.SetClrToScriptCustomConversion<Vector2>((script, vector) =>
         {
             DynValue x = DynValue.NewNumber((double)vector.x);
             DynValue y = DynValue.NewNumber((double)vector.y);
-            DynValue dynVal = DynValue.NewTable(script, new DynValue[] { x, y });
-            return dynVal;
-        }
-        );
+            Table table = new Table(script);
+            table.Set("x", x);
+            table.Set("y", y);
+            return DynValue.NewTable(table);
+        });
 
         // Vector3
 
-        Script.GlobalOptions.CustomConverters.SetScriptToClrCustomConversion(DataType.Table, typeof(Vector3),
-                dynVal =>
+        Script.GlobalOptions.CustomConverters.SetScriptToClrCustomConversion(DataType.Table, typeof(Vector3), dynVal =>
         {
             Table table = dynVal.Table;
-            float x = (float)((Double)table[1]);
-            float y = (float)((Double)table[2]);
-            float z = (float)((Double)table[3]);
+            float x = (float)((Double)table["x"]);
+            float y = (float)((Double)table["y"]);
+            float z = (float)((Double)table["z"]);
             return new Vector3(x, y, z);
-        }
-                                                                            );
-        Script.GlobalOptions.CustomConverters.SetClrToScriptCustomConversion<Vector3>(
-            (script, vector) =>
+        });
+
+        Script.GlobalOptions.CustomConverters.SetClrToScriptCustomConversion<Vector3>((script, vector) =>
         {
             DynValue x = DynValue.NewNumber((double)vector.x);
             DynValue y = DynValue.NewNumber((double)vector.y);
             DynValue z = DynValue.NewNumber((double)vector.z);
-            DynValue dynVal = DynValue.NewTable(script, new DynValue[] { x, y, z });
-            return dynVal;
-        }
-        );
-
+            Table table = new Table(script);
+            table.Set("x", x);
+            table.Set("y", y);
+            table.Set("z", z);
+            return DynValue.NewTable(table);
+        });
     }
-
 }
